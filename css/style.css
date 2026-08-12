@@ -67,6 +67,33 @@ html, body {
   background: #1a6fe0;
 }
 
+#overlay button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+#progress-wrap {
+  width: 260px;
+  height: 10px;
+  margin-top: 20px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #2e86ff;
+  transition: width 0.2s ease;
+}
+
+#progress-text {
+  font-size: 14px;
+  color: #9fb2c8;
+}
+
 .hidden {
   display: none !important;
 }

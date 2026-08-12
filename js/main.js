@@ -44,12 +44,36 @@ onResize();
 scene.add(new THREE.AmbientLight(0xffffff, 1.0));
 scene.add(createStars(viewW, viewH));
 
+// ========== 静态资源加载（进度条） ==========
+const progressBar = document.getElementById('progress-bar');
+const progressText = document.getElementById('progress-text');
+const progressWrap = document.getElementById('progress-wrap');
+const ASSET_TOTAL = 4; // 2 张扇叶贴图 + 2 个音频
+let assetLoaded = 0;
+
+function onAssetLoaded() {
+  assetLoaded++;
+  const pct = Math.round((assetLoaded / ASSET_TOTAL) * 100);
+  progressBar.style.width = pct + '%';
+  progressText.textContent = '资源加载中... ' + pct + '%';
+  if (assetLoaded >= ASSET_TOTAL) {
+    progressWrap.classList.add('hidden');
+    progressText.classList.add('hidden');
+    startBtn.disabled = false;
+    startBtn.textContent = '开始游戏';
+  }
+}
+
 // ========== 纹理加载 ==========
 const texLoader = new THREE.TextureLoader();
-const lanlaoTex = texLoader.load('static/lanlao.png'); // 我方螺旋桨
-const laodaTex = texLoader.load('static/laoda.png');   // 敌方螺旋桨
+const lanlaoTex = texLoader.load('static/lanlao.png', onAssetLoaded, undefined, onAssetLoaded); // 我方螺旋桨
+const laodaTex = texLoader.load('static/laoda.png', onAssetLoaded, undefined, onAssetLoaded);   // 敌方螺旋桨
 lanlaoTex.colorSpace = THREE.SRGBColorSpace;
 laodaTex.colorSpace = THREE.SRGBColorSpace;
+
+// 音频预加载（fetch 拉取进缓存，Audio 播放时即取即走）
+fetch('static/' + encodeURIComponent('中国人能飞.mp3')).then(r => r.blob()).then(onAssetLoaded).catch(onAssetLoaded);
+fetch('static/man.mp3').then(r => r.blob()).then(onAssetLoaded).catch(onAssetLoaded);
 
 // 扇叶贴图信息：孔心归一化坐标（左上角原点）+ 图高/图宽
 const lanlaoProp = { tex: lanlaoTex, holeX: 0.800, holeY: 0.057, aspect: 1402 / 1122 };
