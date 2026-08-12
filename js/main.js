@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { createHelicopter, spinPropellers } from './helicopter.js';
+import { createHelicopter, spinPropellers, applyGrayscale } from './helicopter.js';
 import { createExplosion, updateExplosion, createStars } from './effects.js';
 import { playBgm, playLoseSound, playKillSound } from './audio.js';
 
@@ -210,8 +210,9 @@ function removeObj(arr, i) {
   arr.splice(i, 1);
 }
 
-// 敌机死亡：转为坠毁残骸 —— 起火、加速下坠、失控翻滚、螺旋桨逐渐停转
+// 敌机死亡：转为坠毁残骸 —— 灰度化、起火、加速下坠、失控翻滚、螺旋桨逐渐停转
 function startCrash(e) {
+  applyGrayscale(e); // 残骸变灰，不再有威胁感
   e.userData.crashVy = 2;
   e.userData.crashDrift = e.userData.drift * 0.5;
   e.userData.tumble = (Math.random() < 0.5 ? -1 : 1) * (3 + Math.random() * 3);

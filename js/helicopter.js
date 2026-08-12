@@ -81,3 +81,39 @@ export function spinPropellers(heli, dt) {
   heli.userData.prop.rotation.z += dt * 3.2;
   heli.userData.tailProp.rotation.z -= dt * 4;
 }
+
+// ========== 坠毁残骸灰度化 ==========
+const grayTexCache = new Map();
+
+// 把贴图去色成灰度版本（canvas 逐像素处理，带缓存）
+function grayscaleOf(tex) {
+  if (grayTexCache.has(tex)) return grayTexCache.get(tex);
+  const img = tex.image;
+  const c = document.createElement('canvas');
+  c.width = img.width;
+  c.height = img.height;
+  const ctx = c.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  const d = ctx.getImageData(0, 0, c.width, c.height);
+  const px = d.data;
+  for (let i = 0; i < px.length; i += 4) {
+    const l = 0.299 * px[i] + 0.587 * px[i + 1] + 0.114 * px[i + 2];
+    px[i] = px[i + 1] = px[i + 2] = l;
+  }
+  ctx.putImageData(d, 0, 0);
+  const gt = new THREE.CanvasTexture(c);
+  gt.colorSpace = THREE.SRGBColorSpace;
+  grayTexCache.set(tex, gt);
+  return gt;
+}
+
+// 把整架直升机换成灰度材质（坠毁时用）：纯色部件变灰，贴图部件换灰度纹理
+export function applyGrayscale(group) {
+  group.traverse(obj => {
+    if (!obj.isMesh) return;
+    const m = obj.material;
+    obj.material = m.map
+      ? new THREE.MeshBasicMaterial({ map: grayscaleOf(m.map), transparent: true, depthWrite: false })
+      : new THREE.MeshBasicMaterial({ color: 0x666666 });
+  });
+}
