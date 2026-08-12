@@ -1,0 +1,72 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #0a1628;
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+#game-canvas {
+  display: block;
+  touch-action: none; /* 手机端拖动不触发滚动/缩放 */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#hud {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  color: #fff;
+  font-family: "Microsoft YaHei", sans-serif;
+  font-size: 18px;
+  text-shadow: 1px 1px 2px #000;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+
+#overlay h1 {
+  font-size: 42px;
+  margin: 0 0 12px;
+  text-shadow: 2px 2px 6px #000;
+}
+
+#overlay p {
+  font-size: 18px;
+  margin: 4px 0;
+  color: #cfd8e3;
+}
+
+#overlay button {
+  margin-top: 24px;
+  padding: 12px 42px;
+  font-size: 22px;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  background: #2e86ff;
+  color: #fff;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+
+#overlay button:hover {
+  background: #1a6fe0;
+}
+
+.hidden {
+  display: none !important;
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>中国人能飞</title>
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+</head>
+<body>
+<div id="hud">得分: <span id="score">0</span> &nbsp; 生命: <span id="lives">3</span></div>
+
+<div id="overlay">
+  <h1 id="overlay-title">中国人能飞</h1>
+  <p>电脑：方向键 / WASD 移动 ｜ 手机：按住屏幕拖动</p>
+  <p>自动开火，击落敌机得分，被撞或中弹损失生命</p>
+  <button id="start-btn">开始游戏</button>
+</div>
+
+<canvas id="game-canvas"></canvas>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
